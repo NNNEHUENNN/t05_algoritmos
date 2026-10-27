@@ -1,0 +1,109 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "programacion23200"
+version = "1.0.0"
+description = "Repositorio plantilla para la asignatura Programación 23200"
+readme = "README.md"
+requires-python = ">=3.13,<3.14"
+license = { text = "MIT" }
+authors = [
+    { name = "Universitat de les Illes Balears" }
+]
+
+dependencies = [
+    "marimo>=0.16"
+]
+
+###############################################################################
+# Dependency groups
+###############################################################################
+
+[dependency-groups]
+
+#
+# Herramientas de desarrollo (se instalan con `uv sync`)
+#
+dev = [
+    "pytest>=8.4",
+    "pytest-cov>=6.2",
+    "ruff>=0.12",
+]
+
+#
+# Ecosistema científico (se instalan con `uv sync --group notebooks --group scientific`)
+#
+scientific = [
+    "numpy>=2.3",
+    "scipy>=1.16",
+    "sympy>=1.14",
+    "matplotlib>=3.10",
+]
+
+#
+# Manipulación de datos (se instalan con `uv sync --all-groups`)
+#
+data = [
+    "pandas>=2.3",
+]
+
+###############################################################################
+# Empaquetado
+###############################################################################
+#
+# Autodetección de paquetes bajo src/: no requiere que el nombre del paquete
+# coincida con [project.name], ni actualizar esta sección al renombrar
+# `prg23200` a `prg23200_tX` para un nuevo tema.
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+###############################################################################
+# Pytest
+###############################################################################
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = [
+    "-ra",
+]
+
+###############################################################################
+# Ruff
+###############################################################################
+
+[tool.ruff]
+target-version = "py313"
+line-length = 88
+# notebooks/ y ejercicios_simples/ contienen prosa pedagógica (enunciados
+# largos) y variables/código intencionalmente "sueltos" (sin relación de
+# imports, sin uso posterior). Ruff está pensado para src/, no para eso.
+extend-exclude = ["notebooks", "ejercicios_simples"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errores
+    "F",   # pyflakes
+    "I",   # isort
+	"W",   # pycodestyle advertencias
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+
+###############################################################################
+# Coverage
+###############################################################################
+
+[tool.coverage.run]
+source = ["src"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false

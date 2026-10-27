@@ -1,0 +1,41 @@
+{
+    "python.analysis.typeCheckingMode": "basic",
+
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+
+    "editor.formatOnSave": true,
+
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff"
+    },
+
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit",
+        "source.fixAll.ruff": "explicit"
+    },
+
+    "editor.inlineSuggest.enabled": true,
+    "editor.inlayHints.enabled": "off",
+    "editor.hover.enabled": "off",
+
+    "python.analysis.inlayHints.variableTypes": true,
+    "python.analysis.inlayHints.functionReturnTypes": true,
+    "python.analysis.inlayHints.callArgumentNames": "off",
+
+    "github.copilot.enable": {
+        "*": false,
+        "python": true,
+        "yaml": false,
+        "plaintext": false,
+        "markdown": false
+    },
+
+    "github.copilot.editor.enableAutoCompletions": true,
+
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true
+}

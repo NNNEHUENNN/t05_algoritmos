@@ -1,0 +1,48 @@
+name: CI
+
+# Se ejecuta automáticamente cada vez que se hace push o se abre/actualiza
+# un Pull Request. No requiere ninguna acción manual del estudiante: basta
+# con hacer `git push` para que GitHub Actions lo dispare.
+on:
+  push:
+    branches: ["main"]
+    paths-ignore:
+      - "**.md"
+  pull_request:
+    paths-ignore:
+      - "**.md"
+
+jobs:
+  test:
+    name: Tests y estilo de código
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar uv
+        uses: astral-sh/setup-uv@v9.0.0
+        with:
+          enable-cache: true
+
+      - name: Instalar Python (versión fijada en .python-version)
+        run: uv python install
+
+      - name: Instalar dependencias del proyecto
+        run: uv sync --group dev
+
+      - name: Comprobar formato y estilo con Ruff
+        run: uv run ruff check .
+
+      - name: Ejecutar los tests con pytest
+        # pytest devuelve el código de salida 5 cuando no hay ningún test
+        # todavía (tests/ solo tiene conftest.py). Eso es válido al empezar
+        # un tema nuevo, así que no debe hacer fallar el workflow.
+        run: |
+          uv run pytest || code=$?
+          if [ "${code:-0}" -eq 5 ]; then
+            echo "::notice::Todavía no hay tests en tests/. No se considera un fallo."
+            exit 0
+          fi
+          exit ${code:-0}
